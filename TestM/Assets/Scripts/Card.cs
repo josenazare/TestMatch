@@ -23,7 +23,14 @@ public class Card : MonoBehaviour,IPointerDownHandler
             // Assign the sprite from the ScriptableObject to the card
             CardImage = CardSOData.Image;
 
-            GetComponent<Image>().sprite = CardImage;
+        }
+        else
+        {
+            if (isMatched)
+            {
+                Debug.Log("12 " + gameObject.name);
+                gameObject.GetComponent<Image>().enabled = false;
+            }
         }
     }
 
@@ -46,7 +53,7 @@ public class Card : MonoBehaviour,IPointerDownHandler
             {
                 if (FlipBack)
                 {
-                    Card.GetComponent<Image>().sprite = CardImage;
+                    Card.GetComponent<Image>().sprite = CardSOData.Image;
                 }
                 else
                 {
@@ -61,6 +68,12 @@ public class Card : MonoBehaviour,IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if(GameManager.instance.CardInBuffer != null && GameManager.instance.CurrentlySelected != null)
+        {
+            return;
+        }
+
+        AudioHandler.Instance.audioSource.PlayOneShot(AudioHandler.Instance.FlipAudio);
        GameManager.instance.eventSystem.gameObject.SetActive(false);
         //  GameManager.instance.eventSystem.enabled = false;
         isFlipped = true;

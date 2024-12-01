@@ -100,6 +100,7 @@ public class UIManager : MonoBehaviour
                         Imgcount = 0;
                         cardComponent.CardSOData = GameManager.instance.AllCardsData[Imgcount];
                     }
+                  cardComponent.GetComponent<Image>().sprite =   cardComponent.CardSOData.Image;
                     Imgcount++;
                 }
             }
