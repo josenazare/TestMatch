@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class UIManager : MonoBehaviour
     bool isEven;
     public Sprite CardBackImage;
     public List<Sprite> CardImages;
-
+ public   TextMeshProUGUI triesTxt, matchesTxt;
     public static UIManager instance;
     int midRow;
     int midColumn;
@@ -40,8 +41,6 @@ public class UIManager : MonoBehaviour
 
         }
       GameManager.instance.NumberOfPossiblePairs = rowSize * columnSize / 2;
-
-        GenerateCards();
 
     }
 

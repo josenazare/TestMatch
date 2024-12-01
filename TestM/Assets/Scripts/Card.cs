@@ -9,7 +9,7 @@ public class Card : MonoBehaviour,IPointerDownHandler
     public CardSO CardSOData; // ScriptableObject reference
     public bool isFlipped = false; // Whether the card is flipped
     public Sprite CardImage; // Front side image of the card
-
+    public bool isMatched = false;
     Quaternion initialQuart = new Quaternion();
     Quaternion FinalQuart = new Quaternion();
 
