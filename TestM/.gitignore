@@ -1,0 +1,14 @@
+# Ignore compiled files
+*.exe
+*.dll
+
+# Ignore Unity specific files
+Library/
+Temp/
+Logs/
+*.csproj
+*.unitypackage
+
+# Ignore system files
+.DS_Store
+Thumbs.db
