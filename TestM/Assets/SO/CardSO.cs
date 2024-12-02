@@ -7,5 +7,4 @@ public class CardSO : ScriptableObject
 {
     public int ID;
     public Sprite Image;
-   // public bool isFlipped;
 }
