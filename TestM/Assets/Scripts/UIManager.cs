@@ -97,7 +97,6 @@ private void Start()
         GetDimensions();
 
 
-        int Imgcount = 0;
         // Instantiate cards dynamically
         for (int i = 0; i < rowSize; i++)
         {
