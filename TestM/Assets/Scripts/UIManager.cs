@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     public Button Load;
     int midRow;
     int midColumn;
-    bool FirstLaunch = false; 
+  [SerializeField]  bool FirstLaunch = false; 
     private void Awake()
     {
         instance = this;
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
 
 private void Start()
     {
-        initRowColumnData();
+        
         CheckForSave();
     }
 
@@ -55,7 +55,7 @@ private void Start()
         else
         {
             FirstLaunch = true;
-            rowSize = columnSize = 3; // added for first use so user gets an easy game 
+            rowSize = columnSize = 2; // added for first use so user gets an easy game 
         }
 
         if (columnSize < rowSize)
@@ -117,7 +117,7 @@ private void Start()
                     if (i == midRow && j == midColumn)
                     {
                       GameObject emptyGO =  Instantiate(EmptyGameObject, gridLayout.transform);
-                        emptyGO.GetComponent<Card>().CardSOData = GameManager.instance.EmptyData;
+                       // emptyGO.GetComponent<Card>().CardSOData = GameManager.instance.EmptyData;
                         continue;
                     }
                 }
@@ -138,10 +138,6 @@ private void Start()
                         list2.Add(GameManager.instance.AllCardsData[k]);
                     }
 
-                    foreach (var item in list1)
-                    {
-                        Debug.Log(item.ID);
-                    }
 
                     ShuffleList(list1);
                     ShuffleList(list2);
