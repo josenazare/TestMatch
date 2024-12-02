@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     public Button Load;
     int midRow;
     int midColumn;
-   
+    bool FirstLaunch = false; 
     private void Awake()
     {
         instance = this;
@@ -47,8 +47,16 @@ private void Start()
     }
     public void initRowColumnData()
     {
-        rowSize =  Random.Range(2, 7);
-        columnSize =  Random.Range(2, 7);
+        if (FirstLaunch == true)
+        {
+            rowSize = Random.Range(2, 7);
+            columnSize = Random.Range(2, 7);
+        }
+        else
+        {
+            FirstLaunch = true;
+            rowSize = columnSize = 3; // added for first use so user gets an easy game 
+        }
 
         if (columnSize < rowSize)
         {
