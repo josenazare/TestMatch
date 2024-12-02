@@ -20,7 +20,6 @@ public class Card : MonoBehaviour,IPointerDownHandler
     {
         if (CardSOData != null)
         {
-            // Assign the sprite from the ScriptableObject to the card
             CardImage = CardSOData.Image;
 
         }
@@ -28,7 +27,6 @@ public class Card : MonoBehaviour,IPointerDownHandler
         {
             if (isMatched)
             {
-                Debug.Log("12 " + gameObject.name);
                 gameObject.GetComponent<Image>().enabled = false;
             }
         }
@@ -89,7 +87,7 @@ public class Card : MonoBehaviour,IPointerDownHandler
             GameManager.instance.CurrentlySelected = this;
             GameManager.instance.CurrentlySelected.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             StartCoroutine(RotateCard(GameManager.instance.CurrentlySelected.gameObject));
-            GameManager.instance.CheckPair();
+           GameManager.instance.CheckPair();
         }
     }
 }

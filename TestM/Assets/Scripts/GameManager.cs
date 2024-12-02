@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public List<CardSO> AllCardsData;
+    public CardSO EmptyData;
     public int NumberOfTries = 0, NumberOfMatches = 0;
     public Card CardInBuffer, CurrentlySelected;
     public int NumberOfPossiblePairs;
@@ -18,12 +20,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        eventSystem.gameObject.SetActive(false);
-        UIManager.instance.GenerateCards();
-    }
 
     public IEnumerator InitialFlipCards()
     {
@@ -49,7 +45,9 @@ public class GameManager : MonoBehaviour
             if(NumberOfMatches == NumberOfPossiblePairs)
             {
                AudioHandler.Instance.audioSource.PlayOneShot(AudioHandler.Instance.OverAudio);
+
                 Debug.Log("END");
+               StartCoroutine(ResetData());
             }
 
         }
@@ -159,10 +157,13 @@ public class GameManager : MonoBehaviour
     public void Save()
     {
         SaveCards(GeneratedCards);
-
+        UIManager.instance.Load.interactable = true;
         PlayerPrefs.SetInt("Tries", NumberOfTries);
         PlayerPrefs.SetInt("Matches", NumberOfMatches);
-       
+        PlayerPrefs.SetInt("Rows", UIManager.instance.rowSize);
+        PlayerPrefs.SetInt("Columns", UIManager.instance.columnSize);
+        PlayerPrefs.SetInt("TotalPairs", NumberOfPossiblePairs);
+
     }
 
     public void Load()
@@ -173,11 +174,18 @@ public class GameManager : MonoBehaviour
             // Destroy the child GameObject
             Destroy(child.gameObject);
         }
+
+       NumberOfTries = PlayerPrefs.GetInt("Tries");
+        NumberOfMatches = PlayerPrefs.GetInt("Matches");
+      UIManager.instance.rowSize =  PlayerPrefs.GetInt("Rows");
+        UIManager.instance.columnSize = PlayerPrefs.GetInt("Columns");
+       NumberOfPossiblePairs = PlayerPrefs.GetInt("TotalPairs");
+
+        UIManager.instance.triesTxt.text = NumberOfTries.ToString();
+
+        UIManager.instance.matchesTxt.text = NumberOfMatches.ToString();
+
         LoadCardData();
-
-       UIManager.instance.triesTxt.text = PlayerPrefs.GetInt("Tries").ToString();
-        UIManager.instance.matchesTxt.text = PlayerPrefs.GetInt("Matches").ToString();
-
     }
 
     private void SaveCards(List<GameObject> cardObjects)
@@ -240,7 +248,7 @@ public class GameManager : MonoBehaviour
 
             if (saveData != null && saveData.Cards.Count > 0)
             {
-
+                UIManager.instance.GetDimensions();
                 for (int i = 0; i < saveData.Cards.Count; i++)
                 {
                     // Instantiate the card
@@ -314,5 +322,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ReloadGame()
+    {
+        AudioHandler.Instance.audioSource.PlayOneShot(AudioHandler.Instance.FlipAudio);
+        UIManager.instance.gameObject.SetActive(true);
+        UIManager.instance.GameOverScreen.SetActive(false);
+        UIManager.instance.GameScreen.SetActive(true);
 
+        if (UIManager.instance.gridLayout.transform.childCount == 0)
+
+        UIManager.instance.initRowColumnData();
+        UIManager.instance.GenerateCards();
+        eventSystem.gameObject.SetActive(false);
+    }
+
+    private IEnumerator ResetData()
+    {
+        yield return new WaitForSeconds(1f);
+            GeneratedCards.Clear();
+
+        foreach (Transform child in UIManager.instance.gridLayout.transform)
+        {
+            // Destroy the child GameObject
+            Destroy(child.gameObject);
+        }
+        UIManager.instance.GameOverScreen.SetActive(true);
+        UIManager.instance.GameScreen.SetActive(false);
+        NumberOfMatches = NumberOfTries = 0;
+        UIManager.instance.matchesTxt.text = NumberOfMatches.ToString();
+        UIManager.instance.triesTxt.text = NumberOfTries.ToString();
+    UIManager.instance.gameObject.SetActive(false);
+    }
 }

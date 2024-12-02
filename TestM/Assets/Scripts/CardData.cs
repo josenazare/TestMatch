@@ -8,7 +8,6 @@ public class CardData
     public int CardSO_ID; 
     public bool isFlipped;
     public bool isMatched;
-  //  public Sprite CardImageData;
 }
 
 [System.Serializable]
