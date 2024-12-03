@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     public void Load()
     {
         AudioHandler.Instance.audioSource.PlayOneShot(AudioHandler.Instance.FlipAudio);
+      //  GeneratedCards = new List<GameObject>();
         foreach (Transform child in UIManager.instance.gridLayout.transform)
         {
             // Destroy the child GameObject
@@ -340,6 +341,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
             GeneratedCards.Clear();
+        UIManager.instance.cardsGeneratedData.Clear();
+        UIManager.instance.list1.Clear();
+        UIManager.instance.list2.Clear();
 
         foreach (Transform child in UIManager.instance.gridLayout.transform)
         {

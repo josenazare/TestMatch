@@ -268,6 +268,12 @@ MonoBehaviour:
   matchesTxt: {fileID: 544263050}
   Save: {fileID: 1675655702}
   Load: {fileID: 1522889941}
+  midRow: 0
+  midColumn: 0
+  FirstLaunch: 0
+  list1: []
+  list2: []
+  cardsGeneratedData: []
 --- !u!4 &187202689
 Transform:
   m_ObjectHideFlags: 0

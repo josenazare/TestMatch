@@ -18,8 +18,8 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     [SerializeField] Button Save;
     public Button Load;
-    int midRow;
-    int midColumn;
+   [SerializeField] int midRow;
+   [SerializeField] int midColumn;
   [SerializeField]  bool FirstLaunch = false; 
     private void Awake()
     {
@@ -28,8 +28,8 @@ public class UIManager : MonoBehaviour
 
 private void Start()
     {
-        
         CheckForSave();
+       
     }
 
 
@@ -68,6 +68,10 @@ private void Start()
         {
             isEven = true;
         }
+        else
+        {
+            isEven = false;
+        }
 
         if (!isEven)
         {
@@ -78,7 +82,8 @@ private void Start()
         GameManager.instance.NumberOfPossiblePairs = rowSize * columnSize / 2;
     }
 
-
+    public List<CardSO> list1 = new List<CardSO>();
+    public List<CardSO> list2 = new List<CardSO>();
     public void GetDimensions()
     {
         //Get total container dimensions
@@ -97,9 +102,10 @@ private void Start()
         gridLayout.cellSize = new Vector2(cardWidth, cardHeight);
         gridLayout.spacing = new Vector2(spacingX, spacingY);
     }
+     
+    public List<Card> cardsGeneratedData = new List<Card>();
     public void GenerateCards()
     {
-        List<Card> cardsGeneratedData = new List<Card>();
 
         GetDimensions();
 
@@ -117,36 +123,49 @@ private void Start()
                     if (i == midRow && j == midColumn)
                     {
                       GameObject emptyGO =  Instantiate(EmptyGameObject, gridLayout.transform);
-                       // emptyGO.GetComponent<Card>().CardSOData = GameManager.instance.EmptyData;
+                        Card EmptyC = emptyGO.GetComponent<Card>();
+                        EmptyC.CardSOData = GameManager.instance.EmptyData;
+                        cardsGeneratedData.Add(EmptyC);
                         continue;
                     }
                 }
-
                 GameObject cardClone = Instantiate(card, gridLayout.transform);
                 Card cardComponent = cardClone.GetComponent<Card>();
                 cardsGeneratedData.Add(cardComponent);
             }
         }                 
 
-                
-                    List<CardSO>list1 = new List<CardSO>();
-                    List<CardSO>list2 = new List<CardSO>();
+        
+         
 
-                    for (int k = 0; k < GameManager.instance.NumberOfPossiblePairs; k++)
-                    {
-                        list1.Add(GameManager.instance.AllCardsData[k]);
-                        list2.Add(GameManager.instance.AllCardsData[k]);
-                    }
-
-
-                    ShuffleList(list1);
-                    ShuffleList(list2);
-
-                    list1.AddRange(list2);
+          for (int k = 0; k < GameManager.instance.NumberOfPossiblePairs; k++)
+          {
+              list1.Add(GameManager.instance.AllCardsData[k]);
+              list2.Add(GameManager.instance.AllCardsData[k]);
+          }
 
 
-        for (int i = 0; i < list1.Count; i++)
+          ShuffleList(list1);
+          ShuffleList(list2);
+
+        if (!isEven)
         {
+            list1.Add(GameManager.instance.EmptyData);
+        }
+          list1.AddRange(list2);
+
+        
+        for (int i = 0; i < cardsGeneratedData.Count; i++)
+        {
+            if (!isEven)
+            {
+                if (i == cardsGeneratedData.Count / 2)
+                {
+                    //cardsGeneratedData[i].CardSOData = list1[i];
+                    cardsGeneratedData[i].GetComponent<Image>().sprite = null;
+                    continue;
+                }
+            }
             cardsGeneratedData[i].CardSOData = list1[i];
             cardsGeneratedData[i].GetComponent<Image>().sprite = list1[i].Image;
         }
